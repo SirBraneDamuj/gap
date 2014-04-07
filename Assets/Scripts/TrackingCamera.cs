@@ -56,7 +56,7 @@ public class TrackingCamera : MonoBehaviour {
       }
       Array.Sort(distances);
       Array.Reverse(distances);
-      targetSize = Mathf.Lerp(minSize, maxSize, 2 * (distances[0] - distances[1]) / distances[1]);
+      targetSize = distances[0];
       yield return new WaitForSeconds(updateSpeed);
     }
   }
