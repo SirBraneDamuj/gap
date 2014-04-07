@@ -9,7 +9,6 @@ public class FlickReceiver : MonoBehaviour {
   void Flick(Vector3 startPos) {
     Vector2 start = new Vector2(startPos.x, Screen.height - startPos.y);
     Vector2 end = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-    float angle = GetAngle(start, end);
     float power = MAX_FORCE * (Mathf.Min((start-end).magnitude, MAX_FLICK_RANGE)) / MAX_FLICK_RANGE;
     
     Vector2 force = (start-end).normalized * power;
