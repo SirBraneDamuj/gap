@@ -36,6 +36,13 @@ public class MouseFlick : MonoBehaviour {
     target.Select();
   }
   
+  void CoinDeselected() {
+    if(target != null) {
+      target.Deselect();
+      target = null;
+    }
+  }
+  
   void OnGUI() {
     if(Event.current.type == EventType.Repaint && startedFlick) {
       Vector2 p1 = new Vector2(startPos.x, Screen.height - startPos.y);

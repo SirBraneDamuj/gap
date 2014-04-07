@@ -15,6 +15,7 @@ public class FlickReceiver : MonoBehaviour {
     force.x *= -1.0f;
     
     rigidbody2D.AddForce(force);
+    GetComponent<Coin>().flicked = true;
   }
   
   private float GetAngle(Vector2 startPos, Vector2 endPos) {
