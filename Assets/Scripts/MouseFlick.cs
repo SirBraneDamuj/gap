@@ -21,9 +21,11 @@ public class MouseFlick : MonoBehaviour {
 	}
   
   void StartedDrag() {
+    if(target != null) {
       startedFlick = true;
       startPos = Input.mousePosition;
       endPos = Input.mousePosition;
+    }
   }
   
   void SelectedNewCoin(GameObject newTarget) {
