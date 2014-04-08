@@ -7,17 +7,24 @@ public class GameOver : MonoBehaviour {
   
   public static bool gameStarted = false;
   public static bool over = false;
+  
+  public string message = "RAGGLE FRAGGLE!";
 
 	IEnumerator EndGame(bool won) {
     if(won) {
-      //yay
+      message = "YOU WIN!!!";
     } else if(gameStarted) {
-      over = true;
-      audio.clip = gameOver;
-      audio.Play();
-      yield return new WaitForSeconds(audio.clip.length + 1.0f);
-      gameStarted = false;
-      Application.LoadLevel(0);
+      message = "YOU LOSE!!!";
     }
+    over = true;
+    audio.Play();
+    yield return new WaitForSeconds(audio.clip.length + 1.0f);
+    gameStarted = false;
+    over = false;
+    Application.LoadLevel(0);
+  }
+  
+  void OnGUI() {
+    if(over) { GUI.Box(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 25, 150, 50), message); }
   }
 }

@@ -52,7 +52,7 @@ public class Coin : MonoBehaviour {
   }
   
   public void Deselect() {
-    GetComponent<SpriteRenderer>().sprite = Resources.Load("red_x", typeof(Sprite)) as Sprite;
+    GetComponent<SpriteRenderer>().sprite = Resources.Load("blue_x", typeof(Sprite)) as Sprite;
   }
 
   void OnMouseDown() {
@@ -62,8 +62,16 @@ public class Coin : MonoBehaviour {
   }
   
   void OnCollisionEnter2D(Collision2D collision) {
-    if(collision.collider.tag == "Coin" && flicked && GameOver.gameStarted) {
+    if(GameOver.gameStarted && !GameOver.over) {
       Camera.main.SendMessage("EndGame", false);
+      this.flicked = false;
+      Camera.main.SendMessage("CoinDeselected");
+    }
+  }
+  
+  void OnTriggerEnter2D(Collider2D other) {
+    if(other.tag == "Goal" && !GameOver.over && !flicked) {
+      Camera.main.SendMessage("EndGame", true);
       this.flicked = false;
       Camera.main.SendMessage("CoinDeselected");
     }
