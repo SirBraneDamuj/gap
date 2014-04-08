@@ -6,11 +6,13 @@ public class GameOver : MonoBehaviour {
   public AudioClip gameOver;
   
   public static bool gameStarted = false;
+  public static bool over = false;
 
 	IEnumerator EndGame(bool won) {
     if(won) {
       //yay
     } else if(gameStarted) {
+      over = true;
       audio.clip = gameOver;
       audio.Play();
       yield return new WaitForSeconds(audio.clip.length + 1.0f);
