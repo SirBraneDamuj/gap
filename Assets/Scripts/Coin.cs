@@ -21,13 +21,13 @@ public class Coin : MonoBehaviour {
         this.flicked = false;
         Camera.main.SendMessage("CoinDeselected");
       } else if(rigidbody2D.velocity.magnitude <= stoppedVelocity && flickProperties.timer >= delayTimer) {
-        if(GameOver.gameStarted) {
-          Camera.main.SendMessage("EndGame", false);
+        if(GameOver.gameStarted && !GameOver.over) {
+          GameOverYeah(false);
         } else {
           GameOver.gameStarted = true;
+          this.flicked = false;
+          Camera.main.SendMessage("CoinDeselected");
         }
-        this.flicked = false;
-        Camera.main.SendMessage("CoinDeselected");
       }
     }
   }
@@ -54,6 +54,10 @@ public class Coin : MonoBehaviour {
   public void Deselect() {
     GetComponent<SpriteRenderer>().sprite = Resources.Load("blue_x", typeof(Sprite)) as Sprite;
   }
+  
+  public void Dead() {
+    GetComponent<SpriteRenderer>().sprite = Resources.Load("red_x", typeof(Sprite)) as Sprite;
+  }
 
   void OnMouseDown() {
     if(!GameOver.over) {
@@ -63,17 +67,24 @@ public class Coin : MonoBehaviour {
   
   void OnCollisionEnter2D(Collision2D collision) {
     if(GameOver.gameStarted && !GameOver.over) {
-      Camera.main.SendMessage("EndGame", false);
-      this.flicked = false;
-      Camera.main.SendMessage("CoinDeselected");
+      GameOverYeah(false);
     }
   }
   
   void OnTriggerEnter2D(Collider2D other) {
     if(other.tag == "Goal" && !GameOver.over && !flicked) {
-      Camera.main.SendMessage("EndGame", true);
-      this.flicked = false;
+      GameOverYeah(true);
+    }
+  }
+  
+  void GameOverYeah(bool victory) {
+    Camera.main.SendMessage("EndGame", victory);
+    this.flicked = false;
+    Camera.main.SendMessage("CoinDeselected");
+    if(victory) {
       Camera.main.SendMessage("CoinDeselected");
+    } else {
+      Dead();
     }
   }
 
