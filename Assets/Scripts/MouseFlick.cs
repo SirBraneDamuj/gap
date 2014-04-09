@@ -32,7 +32,7 @@ public class MouseFlick : MonoBehaviour {
     }
   }
   
-  void OnGUI() {
+  /*void OnGUI() {
     if(Event.current.type == EventType.Repaint && startedFlick) {
       Vector2 p1 = new Vector2(startPos.x, Screen.height - startPos.y);
       Vector2 p2 = new Vector2(endPos.x, Screen.height - endPos.y);
@@ -42,5 +42,5 @@ public class MouseFlick : MonoBehaviour {
       
       Drawing.DrawLine(q1, q2, Color.red, 2.0f, true);
     }
-  }
+  }*/
 }

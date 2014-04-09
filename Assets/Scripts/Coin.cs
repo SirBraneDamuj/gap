@@ -20,13 +20,13 @@ public class Coin : MonoBehaviour {
       if(flickProperties.DetermineGateSide(transform.position) != this.side && flickProperties.Contained(transform.position)) {
         this.flicked = false;
         Camera.main.SendMessage("CoinDeselected");
+        GameOver.gameStarted = true;
       } else if(rigidbody2D.velocity.magnitude <= stoppedVelocity && flickProperties.timer >= delayTimer) {
         if(GameOver.gameStarted && !GameOver.over) {
           GameOverYeah(false);
         } else {
           GameOver.gameStarted = true;
           this.flicked = false;
-          Camera.main.SendMessage("CoinDeselected");
         }
       }
     }
@@ -68,6 +68,9 @@ public class Coin : MonoBehaviour {
   void OnCollisionEnter2D(Collision2D collision) {
     if(GameOver.gameStarted && !GameOver.over) {
       GameOverYeah(false);
+      collision.collider.SendMessage("Dead", SendMessageOptions.DontRequireReceiver);
+    } else if(!GameOver.gameStarted) {
+      Camera.main.SendMessage("CoinDeselected");
     }
   }
   

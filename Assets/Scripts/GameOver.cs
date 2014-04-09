@@ -8,13 +8,16 @@ public class GameOver : MonoBehaviour {
   public static bool gameStarted = false;
   public static bool over = false;
   
+  public GameObject gameOverSprite;
+  public GameObject winSprite;
+  
   public string message = "RAGGLE FRAGGLE!";
 
 	IEnumerator EndGame(bool won) {
     if(won) {
-      message = "YOU WIN!!!";
-    } else if(gameStarted) {
-      message = "YOU LOSE!!!";
+      winSprite.GetComponent<SpriteRenderer>().enabled = true;
+    } else {
+      gameOverSprite.GetComponent<SpriteRenderer>().enabled = true;
     }
     over = true;
     audio.Play();
@@ -22,9 +25,5 @@ public class GameOver : MonoBehaviour {
     gameStarted = false;
     over = false;
     Application.LoadLevel(0);
-  }
-  
-  void OnGUI() {
-    if(over) { GUI.Box(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 25, 150, 50), message); }
   }
 }
