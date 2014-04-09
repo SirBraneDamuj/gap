@@ -17,7 +17,7 @@ public class Coin : MonoBehaviour {
     }
     if(flicked) {
       flickProperties.timer += Time.deltaTime;
-      if(flickProperties.DetermineSide(transform.position) != this.side) {
+      if(flickProperties.DetermineGateSide(transform.position) != this.side && flickProperties.Contained(transform.position)) {
         this.flicked = false;
         Camera.main.SendMessage("CoinDeselected");
       } else if(rigidbody2D.velocity.magnitude <= stoppedVelocity && flickProperties.timer >= delayTimer) {
@@ -43,7 +43,7 @@ public class Coin : MonoBehaviour {
     
     rigidbody2D.AddForce(force);
     
-    this.side = props.DetermineSide(transform.position);
+    this.side = props.DetermineGateSide(transform.position);
     flicked = true;
   }
 

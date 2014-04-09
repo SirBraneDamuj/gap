@@ -20,7 +20,7 @@ public class CoinManager : MonoBehaviour {
   }
   
   public void FlickSelected(Vector2 startPos, Vector2 endPos) {
-    selected.Flick(new FlickProperties(startPos, endPos, nonSelected));
+    selected.Flick(new FlickProperties(selected.transform.position, startPos, endPos, nonSelected));
   }
   
   void SelectedNewCoin(GameObject newTarget) {
