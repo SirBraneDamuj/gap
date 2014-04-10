@@ -8,9 +8,9 @@ public class FlickProperties {
   public Coin[] gate;
   public float timer;
   
-  public FlickProperties(Vector2 initialPos, Vector2 start, Vector2 end, Coin[] gate) {
+  public FlickProperties(Vector2 initialPos, Vector2 end, Coin[] gate) {
     this.initialPos = initialPos;
-    this.start = start;
+    this.start = Camera.main.WorldToScreenPoint(initialPos);
     this.end = end;
     this.gate = gate;
     this.timer = 0.0f;

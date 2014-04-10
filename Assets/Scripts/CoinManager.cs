@@ -19,11 +19,11 @@ public class CoinManager : MonoBehaviour {
     }
   }
   
-  public void FlickSelected(Vector2 startPos, Vector2 endPos) {
-    selected.Flick(new FlickProperties(selected.transform.position, startPos, endPos, nonSelected));
+  public void FlickSelected(Vector2 direction) {
+    selected.Flick(new FlickProperties(selected.transform.position, direction, nonSelected));
   }
   
-  void SelectedNewCoin(GameObject newTarget) {
+  public void Select(GameObject newTarget) {
     if(selected != null) {
       selected.Deselect();
     }
@@ -31,7 +31,7 @@ public class CoinManager : MonoBehaviour {
     selected.Select();
   }
   
-  void CoinDeselected() {
+  public void CoinDeselected() {
     if(selected != null) {
       selected.Deselect();
       selected = null;

@@ -61,7 +61,7 @@ public class Coin : MonoBehaviour {
 
   void OnMouseDown() {
     if(!GameOver.over) {
-      Camera.main.SendMessage("SelectedNewCoin", gameObject);
+      Camera.main.SendMessage("StartedDrag", gameObject);
     }
   }
   
