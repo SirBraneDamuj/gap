@@ -24,9 +24,10 @@ public class MouseFlick : MonoBehaviour {
     }
 	}
   
-  void StartedDrag(GameObject coin) {
-    coinManager.Select(coin);
-    startedFlick = true;
-    flickTimer = 0.0f;
+  public void StartDrag(GameObject coin) {
+    if(!GameManager.Over()) {
+      startedFlick = true;
+      flickTimer = 0.0f;
+    }
   }
 }

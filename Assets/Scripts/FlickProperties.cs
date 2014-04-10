@@ -7,6 +7,7 @@ public class FlickProperties {
   public Vector2 end;
   public Coin[] gate;
   public float timer;
+  public bool cleared;
   
   public FlickProperties(Vector2 initialPos, Vector2 end, Coin[] gate) {
     this.initialPos = initialPos;
@@ -14,6 +15,12 @@ public class FlickProperties {
     this.end = end;
     this.gate = gate;
     this.timer = 0.0f;
+  }
+  
+  public void DetermineClear(Vector2 pos, float initialSide) {
+    if(DetermineGateSide(pos) != initialSide && Contained(pos)) {
+      cleared = true;
+    }
   }
   
   public float DetermineGateSide(Vector2 v) {

@@ -5,6 +5,7 @@ public class CoinManager : MonoBehaviour {
   
   public Coin[] coins;
   public Coin selected = null;
+  public Coin firstCoin;
   public Coin[] nonSelected {
     get {
       Coin[] cs = new Coin[2];
@@ -18,17 +19,23 @@ public class CoinManager : MonoBehaviour {
       return cs;
     }
   }
+  private MouseFlick flicker;
+  
+  void Start() {
+    flicker = GetComponent<MouseFlick>();
+  }
+  
+  void CoinClicked(GameObject coin) {
+    if(GameManager.Pregame() && coin != firstCoin.gameObject) return;
+    if(selected == null) {
+      selected = coin.GetComponent<Coin>();
+      selected.Select();
+      flicker.StartDrag(coin);
+    }
+  }
   
   public void FlickSelected(Vector2 direction) {
     selected.Flick(new FlickProperties(selected.transform.position, direction, nonSelected));
-  }
-  
-  public void Select(GameObject newTarget) {
-    if(selected != null) {
-      selected.Deselect();
-    }
-    selected = newTarget.GetComponent<Coin>();
-    selected.Select();
   }
   
   public void CoinDeselected() {

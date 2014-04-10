@@ -6,8 +6,10 @@ public class Coin : MonoBehaviour {
   public bool flicked = false;
   public float stoppedVelocity = 0.1f;
   public float delayTimer = 0.3f;
+  
   private FlickProperties flickProperties;
   private float side;
+  
   public const float MAX_FLICK_RANGE=200.0f;
   public const float MAX_FORCE = 1000.0f;
   
@@ -17,17 +19,15 @@ public class Coin : MonoBehaviour {
     }
     if(flicked) {
       flickProperties.timer += Time.deltaTime;
-      if(flickProperties.DetermineGateSide(transform.position) != this.side && flickProperties.Contained(transform.position)) {
+      flickProperties.DetermineClear(transform.position, this.side);
+      if(rigidbody2D.velocity.magnitude <= stoppedVelocity && flickProperties.timer >= delayTimer && !GameManager.Over()) {
+        if(GameManager.Pregame()) {
+          GameManager.StartGame();
+        } else if(!flickProperties.cleared) {
+          GameOver(false);
+        }
         this.flicked = false;
         Camera.main.SendMessage("CoinDeselected");
-        GameOver.gameStarted = true;
-      } else if(rigidbody2D.velocity.magnitude <= stoppedVelocity && flickProperties.timer >= delayTimer) {
-        if(GameOver.gameStarted && !GameOver.over) {
-          GameOverYeah(false);
-        } else {
-          GameOver.gameStarted = true;
-          this.flicked = false;
-        }
       }
     }
   }
@@ -48,11 +48,15 @@ public class Coin : MonoBehaviour {
   }
 
   public void Select() {
-    GetComponent<SpriteRenderer>().sprite = Resources.Load("yellow_x", typeof(Sprite)) as Sprite;
+    if(!GameManager.Over()) {
+      GetComponent<SpriteRenderer>().sprite = Resources.Load("yellow_x", typeof(Sprite)) as Sprite;
+    }
   }
   
   public void Deselect() {
-    GetComponent<SpriteRenderer>().sprite = Resources.Load("blue_x", typeof(Sprite)) as Sprite;
+    if(!GameManager.Over()) {
+      GetComponent<SpriteRenderer>().sprite = Resources.Load("blue_x", typeof(Sprite)) as Sprite;
+    }
   }
   
   public void Dead() {
@@ -60,30 +64,27 @@ public class Coin : MonoBehaviour {
   }
 
   void OnMouseDown() {
-    if(!GameOver.over) {
-      Camera.main.SendMessage("StartedDrag", gameObject);
+    if(!GameManager.Over()) {
+      Camera.main.SendMessage("CoinClicked", gameObject);
     }
   }
   
   void OnCollisionEnter2D(Collision2D collision) {
-    if(GameOver.gameStarted && !GameOver.over) {
-      GameOverYeah(false);
+    if(GameManager.InProgress()) {
+      GameOver(false);
       collision.collider.SendMessage("Dead", SendMessageOptions.DontRequireReceiver);
-    } else if(!GameOver.gameStarted) {
-      Camera.main.SendMessage("CoinDeselected");
     }
   }
   
   void OnTriggerEnter2D(Collider2D other) {
-    if(other.tag == "Goal" && !GameOver.over && !flicked) {
-      GameOverYeah(true);
+    if(other.tag == "Goal" && !GameManager.Over() && flicked) {
+      GameOver(true);
     }
   }
   
-  void GameOverYeah(bool victory) {
-    Camera.main.SendMessage("EndGame", victory);
+  void GameOver(bool victory) {
+    GameManager.EndGame(victory);
     this.flicked = false;
-    Camera.main.SendMessage("CoinDeselected");
     if(victory) {
       Camera.main.SendMessage("CoinDeselected");
     } else {

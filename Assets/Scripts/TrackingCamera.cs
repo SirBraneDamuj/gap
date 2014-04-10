@@ -43,7 +43,7 @@ public class TrackingCamera : MonoBehaviour {
       }
       sum /= targets.Length;
       sum.z = -10;
-      sum.y += 6.0f; //XXX: this is magic but it's way too late for me to care
+      sum.y += 4.0f; //XXX: this is magic but it's way too late for me to care
       targetPosition = sum;
       yield return new WaitForSeconds(updateSpeed);
     }
@@ -57,7 +57,7 @@ public class TrackingCamera : MonoBehaviour {
       }
       Array.Sort(distances);
       Array.Reverse(distances);
-      targetSize = distances[0];
+      targetSize = distances[0] * 0.8f;
       yield return new WaitForSeconds(updateSpeed);
     }
   }
