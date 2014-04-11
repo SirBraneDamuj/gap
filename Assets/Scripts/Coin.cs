@@ -77,8 +77,8 @@ public class Coin : MonoBehaviour {
   }
   
   void OnTriggerEnter2D(Collider2D other) {
-    if(other.tag == "Goal" && !GameManager.Over() && flicked) {
-      GameOver(true);
+    if(other.tag == "Goal" && !GameManager.Over()) {
+      GameOver(flickProperties.cleared);
     }
   }
   
