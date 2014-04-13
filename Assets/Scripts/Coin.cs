@@ -7,11 +7,13 @@ public class Coin : MonoBehaviour {
   public float stoppedVelocity = 0.1f;
   public float delayTimer = 0.3f;
   
+  //range in pixels that you can drag your finger. a flick at this range = biggest power
+  public float maxFlickRange=200.0f;
+  //highest end of the force spectrum
+  public float maxForce = 1000.0f;
+  
   private FlickProperties flickProperties;
   private float side;
-  
-  public const float MAX_FLICK_RANGE=200.0f;
-  public const float MAX_FORCE = 1000.0f;
   
   void Update() {
     if(Mathf.Abs(rigidbody2D.velocity.magnitude) <= stoppedVelocity) {
@@ -36,7 +38,7 @@ public class Coin : MonoBehaviour {
     this.flickProperties = props;
     Vector2 start = new Vector2(props.start.x, Screen.height - props.start.y);
     Vector2 end = new Vector2(props.end.x, Screen.height - props.end.y);
-    float power = MAX_FORCE * (Mathf.Min((start-end).magnitude, MAX_FLICK_RANGE)) / MAX_FLICK_RANGE;
+    float power = maxForce * (Mathf.Min((start-end).magnitude, maxFlickRange)) / maxFlickRange;
     
     Vector2 force = (start-end).normalized * power;
     force.x *= -1.0f;

@@ -19,6 +19,7 @@ public class CoinManager : MonoBehaviour {
       return cs;
     }
   }
+  public int numFlicks = 0;
   private MouseFlick flicker;
   
   void Start() {
@@ -36,6 +37,9 @@ public class CoinManager : MonoBehaviour {
   
   public void FlickSelected(Vector2 direction) {
     selected.Flick(new FlickProperties(selected.transform.position, direction, nonSelected));
+    if(!GameManager.Pregame()) {
+      numFlicks++;
+    }
   }
   
   public void CoinDeselected() {
