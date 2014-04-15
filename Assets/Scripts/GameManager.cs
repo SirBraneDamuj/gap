@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator EndGameImpl() {
     audio.Play();
-    yield return new WaitForSeconds(audio.clip.length + 1.0f);
-    //Application.LoadLevel(0);
+    yield return new WaitForSeconds(audio.clip.length);
+    Application.LoadLevel(0);
   }
 }
