@@ -36,9 +36,14 @@ public class CoinManager : MonoBehaviour {
   }
   
   public void FlickSelected(Vector2 direction) {
-    selected.Flick(new FlickProperties(selected.transform.position, direction, nonSelected));
-    if(!GameManager.Pregame()) {
-      numFlicks++;
+    FlickProperties props = new FlickProperties(selected.transform.position, direction, nonSelected);
+    if(!props.ValidFlick()) {
+      selected.Flick(new FlickProperties(selected.transform.position, direction, nonSelected));
+      if(!GameManager.Pregame()) {
+        numFlicks++;
+      }      
+    } else {
+      CoinDeselected();
     }
   }
   

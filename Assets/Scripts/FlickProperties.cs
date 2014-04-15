@@ -9,12 +9,18 @@ public class FlickProperties {
   public float timer;
   public bool cleared;
   
+  public const float MIN_FLICK_RANGE = 25.0f;
+  
   public FlickProperties(Vector2 initialPos, Vector2 end, Coin[] gate) {
     this.initialPos = initialPos;
     this.start = Camera.main.WorldToScreenPoint(initialPos);
     this.end = end;
     this.gate = gate;
     this.timer = 0.0f;
+  }
+  
+  public bool ValidFlick() {
+    return (end - start).magnitude < MIN_FLICK_RANGE;
   }
   
   public void DetermineClear(Vector2 pos, float initialSide) {
