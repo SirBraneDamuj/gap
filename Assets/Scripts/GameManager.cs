@@ -48,6 +48,12 @@ public class GameManager : MonoBehaviour {
     instance = gameObject.GetComponent<GameManager>();
   }
   
+  void Update() {
+    if(Input.GetKey(KeyCode.Escape)) {
+      Application.Quit();
+    }
+  }
+  
   void EndGameCoroutine() {
     StartCoroutine(EndGameImpl());
   }

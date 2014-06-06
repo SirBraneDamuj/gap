@@ -16,6 +16,10 @@ public class Coin : MonoBehaviour {
   private FlickProperties flickProperties;
   private float side;
   
+  private void Log(string m) {
+    Debug.Log("FLICKLOG: " + m);
+  }
+  
   void Start() {
     maxFlickRange = Screen.height * 0.30f;
   }
@@ -28,9 +32,14 @@ public class Coin : MonoBehaviour {
       flickProperties.timer += Time.deltaTime;
       flickProperties.DetermineClear(transform.position, this.side);
       if(rigidbody2D.velocity.magnitude <= stoppedVelocity && flickProperties.timer >= delayTimer && !GameManager.Over()) {
+        Log("FLICK ENDED");
         if(GameManager.Pregame()) {
           GameManager.StartGame();
+          Log("GAME STARTED");
         } else if(!flickProperties.cleared) {
+          Log("END GATE SIDE: " + flickProperties.DetermineGateSide(transform.position));
+          Log("CONTAINED?: " + flickProperties.Contained(transform.position));
+          Log("GAME ENDED, LOSS");
           GameOver(false);
         }
         this.flicked = false;
@@ -60,6 +69,7 @@ public class Coin : MonoBehaviour {
     rigidbody2D.AddForce(force);
     
     this.side = props.DetermineGateSide(transform.position);
+    Log("Initial Side: " + this.side);
     flicked = true;
   }
 
