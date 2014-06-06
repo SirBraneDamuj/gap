@@ -20,13 +20,13 @@ public class CoinManager : MonoBehaviour {
     }
   }
   public int numFlicks = 0;
-  private MouseFlick flicker;
+  private TouchFlick flicker;
   
   void Start() {
-    flicker = GetComponent<MouseFlick>();
+    flicker = GetComponent<TouchFlick>();
   }
   
-  void CoinClicked(GameObject coin) {
+  public void CoinClicked(GameObject coin) {
     if(GameManager.Pregame() && coin != firstCoin.gameObject) return;
     if(selected == null) {
       selected = coin.GetComponent<Coin>();

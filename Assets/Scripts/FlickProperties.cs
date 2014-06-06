@@ -20,6 +20,7 @@ public class FlickProperties {
   }
   
   public bool ValidFlick() {
+    Debug.Log("VALID FLICK " + end + " " + start);
     return (end - start).magnitude < MIN_FLICK_RANGE;
   }
   

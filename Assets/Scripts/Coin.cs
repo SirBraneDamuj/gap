@@ -6,6 +6,7 @@ public class Coin : MonoBehaviour {
   public bool flicked = false;
   public float stoppedVelocity = 0.1f;
   public float delayTimer = 0.3f;
+  public CoinManager cm;
   
   //range in pixels that you can drag your finger. a flick at this range = biggest power
   public float maxFlickRange=200.0f;
@@ -14,6 +15,10 @@ public class Coin : MonoBehaviour {
   
   private FlickProperties flickProperties;
   private float side;
+  
+  void Start() {
+    maxFlickRange = Screen.height * 0.30f;
+  }
   
   void Update() {
     if(Mathf.Abs(rigidbody2D.velocity.magnitude) <= stoppedVelocity) {
@@ -29,7 +34,16 @@ public class Coin : MonoBehaviour {
           GameOver(false);
         }
         this.flicked = false;
-        Camera.main.SendMessage("CoinDeselected");
+        cm.SendMessage("CoinDeselected");
+      }
+    } else if(Input.touchCount > 0) {
+      Touch t = Input.GetTouch(0);
+      
+      if(t.phase == TouchPhase.Began) {
+        Vector2 world = Camera.main.ScreenToWorldPoint(t.position);
+        if(!GameManager.Over() && collider2D.OverlapPoint(world)) {
+          cm.CoinClicked(gameObject);
+        }
       }
     }
   }
@@ -63,12 +77,6 @@ public class Coin : MonoBehaviour {
   
   public void Dead() {
     GetComponent<SpriteRenderer>().sprite = Resources.Load("red_x", typeof(Sprite)) as Sprite;
-  }
-
-  void OnMouseDown() {
-    if(!GameManager.Over()) {
-      Camera.main.SendMessage("CoinClicked", gameObject);
-    }
   }
   
   void OnCollisionEnter2D(Collision2D collision) {
