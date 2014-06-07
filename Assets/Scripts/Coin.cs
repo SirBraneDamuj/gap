@@ -32,27 +32,13 @@ public class Coin : MonoBehaviour {
       flickProperties.timer += Time.deltaTime;
       flickProperties.DetermineClear(transform.position, this.side);
       if(rigidbody2D.velocity.magnitude <= stoppedVelocity && flickProperties.timer >= delayTimer && !GameManager.Over()) {
-        Log("FLICK ENDED");
         if(GameManager.Pregame()) {
           GameManager.StartGame();
-          Log("GAME STARTED");
         } else if(!flickProperties.cleared) {
-          Log("END GATE SIDE: " + flickProperties.DetermineGateSide(transform.position));
-          Log("CONTAINED?: " + flickProperties.Contained(transform.position));
-          Log("GAME ENDED, LOSS");
           GameOver(false);
         }
         this.flicked = false;
-        cm.SendMessage("CoinDeselected");
-      }
-    } else if(Input.touchCount > 0) {
-      Touch t = Input.GetTouch(0);
-      
-      if(t.phase == TouchPhase.Began) {
-        Vector2 world = Camera.main.ScreenToWorldPoint(t.position);
-        if(!GameManager.Over() && collider2D.OverlapPoint(world)) {
-          cm.CoinClicked(gameObject);
-        }
+        Deselect();
       }
     }
   }
@@ -106,7 +92,7 @@ public class Coin : MonoBehaviour {
     GameManager.EndGame(victory);
     this.flicked = false;
     if(victory) {
-      Camera.main.SendMessage("CoinDeselected");
+        Deselect();
     } else {
       Dead();
     }

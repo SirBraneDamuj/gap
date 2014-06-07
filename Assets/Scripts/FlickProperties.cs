@@ -20,13 +20,11 @@ public class FlickProperties {
   }
   
   public bool ValidFlick() {
-    Debug.Log("VALID FLICK " + end + " " + start);
-    return (end - start).magnitude < MIN_FLICK_RANGE;
+    return (end - start).magnitude >= MIN_FLICK_RANGE;
   }
   
   public void DetermineClear(Vector2 pos, float initialSide) {
     RaycastHit2D[] results = Physics2D.LinecastAll(gate[0].transform.position, gate[1].transform.position);
-    Debug.Log("FLICKLOG: " + results.Length);
     for(int i=0; i<results.Length; i++) {
       GameObject result = results[i].collider.gameObject;
       if(result != gate[0].gameObject && result != gate[1].gameObject) {

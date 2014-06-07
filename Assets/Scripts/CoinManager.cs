@@ -4,53 +4,31 @@ using System.Collections;
 public class CoinManager : MonoBehaviour {
   
   public Coin[] coins;
-  public Coin selected = null;
   public Coin firstCoin;
-  public Coin[] nonSelected {
-    get {
-      Coin[] cs = new Coin[2];
-      int i=0;
-      foreach(Coin c in coins) {
-        if(c != selected) {
-          cs[i] = c;
-          i++;
-        }
-      }
-      return cs;
-    }
-  }
   public int numFlicks = 0;
-  private TouchFlick flicker;
   
-  void Start() {
-    flicker = GetComponent<TouchFlick>();
+  public Coin[] NonSelected(Coin s) {
+    Coin[] cs = new Coin[2];
+    int i=0;
+    foreach(Coin c in coins) {
+      if(c != s) {
+        cs[i] = c;
+        i++;
+      }
+    }
+    return cs;
   }
   
-  public void CoinClicked(GameObject coin) {
-    if(GameManager.Pregame() && coin != firstCoin.gameObject) return;
-    if(selected == null) {
-      selected = coin.GetComponent<Coin>();
-      selected.Select();
-      flicker.StartDrag(coin);
+  public Coin TouchedCoin(Vector2 t) {
+    Debug.Log(t);
+    Coin retval = null;
+    Vector2 world = Camera.main.ScreenToWorldPoint(t);
+    for(int i=0; i<coins.Length; i++) {
+      Coin c = coins[i];
+      if(!GameManager.Over() && c.collider2D.OverlapPoint(world)) {
+        retval = c;
+      }
     }
-  }
-  
-  public void FlickSelected(Vector2 direction) {
-    FlickProperties props = new FlickProperties(selected.transform.position, direction, nonSelected);
-    if(!props.ValidFlick()) {
-      selected.Flick(new FlickProperties(selected.transform.position, direction, nonSelected));
-      if(!GameManager.Pregame()) {
-        numFlicks++;
-      }      
-    } else {
-      CoinDeselected();
-    }
-  }
-  
-  public void CoinDeselected() {
-    if(selected != null) {
-      selected.Deselect();
-      selected = null;
-    }
+    return retval;
   }
 }
